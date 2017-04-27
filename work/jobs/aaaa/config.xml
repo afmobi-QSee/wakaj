@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<project>
+  <actions/>
+  <description></description>
+  <keepDependencies>false</keepDependencies>
+  <properties/>
+  <scm class="hudson.scm.NullSCM"/>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers/>
+  <concurrentBuild>false</concurrentBuild>
+  <builders>
+    <hudson.tasks.Shell>
+      <command>echo ImageName=&quot;centos&quot; &gt; a.properties</command>
+    </hudson.tasks.Shell>
+    <afmobi.wakaj.RancherClientBuilder plugin="wakaj@1.0-SNAPSHOT">
+      <profile>a.properties</profile>
+      <proName>ImageName</proName>
+      <accessKey>1EC17F23F54602176B60</accessKey>
+      <secretKey>yfuuvg4TTZbLAU66hv1yEyXsSXsn7BToNEerhxfY</secretKey>
+      <rancherHost>http://192.168.10.202:8080</rancherHost>
+      <envId>1a5</envId>
+      <serviceId>1s12</serviceId>
+    </afmobi.wakaj.RancherClientBuilder>
+  </builders>
+  <publishers/>
+  <buildWrappers/>
+</project>

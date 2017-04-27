@@ -1,0 +1,12 @@
+afmobi/wakaj/RancherClientBuilder/DescriptorImpl/doCheckServiceId.stapler
+afmobi/wakaj/RancherClientBuilder/DescriptorImpl/doCheckEnvId.stapler
+afmobi/wakaj/RancherClientBuilder.class
+afmobi/wakaj/RancherClientBuilder/DescriptorImpl/doCheckProName.stapler
+afmobi/wakaj/RancherClientBuilder/DescriptorImpl/doCheckRancherHost.stapler
+afmobi/wakaj/RancherModel.class
+afmobi/wakaj/RancherClientBuilder.stapler
+afmobi/wakaj/RancherClientBuilder/DescriptorImpl/doCheckAccessKey.stapler
+afmobi/wakaj/RancherClientBuilder$DescriptorImpl.class
+afmobi/wakaj/RancherClientBuilder/DescriptorImpl/doCheckProfile.stapler
+afmobi/wakaj/RancherClientBuilder/DescriptorImpl/doCheckSecretKey.stapler
+META-INF/annotations/hudson.Extension
