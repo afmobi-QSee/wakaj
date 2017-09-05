@@ -13,16 +13,16 @@
   <concurrentBuild>false</concurrentBuild>
   <builders>
     <hudson.tasks.Shell>
-      <command>echo ImageName=&quot;centos&quot; &gt; a.properties</command>
+      <command>echo ImageName=&quot;docker-reg-bj.afmobitek.com:5000/user-server/debug:v7e6243b&quot; &gt; a.properties</command>
     </hudson.tasks.Shell>
     <afmobi.wakaj.RancherClientBuilder plugin="wakaj@1.0-SNAPSHOT">
       <profile>a.properties</profile>
       <proName>ImageName</proName>
-      <accessKey>1EC17F23F54602176B60</accessKey>
-      <secretKey>yfuuvg4TTZbLAU66hv1yEyXsSXsn7BToNEerhxfY</secretKey>
-      <rancherHost>http://192.168.10.202:8080</rancherHost>
+      <accessKey>E080363B5C501457933C</accessKey>
+      <secretKey>tsh1jmPmjGEHMDSxm6rh7qvjJiviy2rHjG3y24kM</secretKey>
+      <rancherHost>http://10.240.36.216:8080</rancherHost>
       <envId>1a5</envId>
-      <serviceId>1s12</serviceId>
+      <serviceId>1s192</serviceId>
     </afmobi.wakaj.RancherClientBuilder>
   </builders>
   <publishers/>

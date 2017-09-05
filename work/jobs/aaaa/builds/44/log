@@ -1,0 +1,8 @@
+Started by user [8mha:AAAAlh+LCAAAAAAAAP9b85aBtbiIQTGjNKU4P08vOT+vOD8nVc83PyU1x6OyILUoJzMv2y+/JJUBAhiZGBgqihhk0NSjKDWzXb3RdlLBUSYGJk8GtpzUvPSSDB8G5tKinBIGIZ+sxLJE/ZzEvHT94JKizLx0a6BxUmjGOUNodHsLgAzOEgYu/dLi1CL9vNKcHACFIKlWvwAAAA==[0manonymous
+Building in workspace /home/wen/Github/wakaj/work/jobs/aaaa/workspace
+[workspace] $ /bin/sh -xe /tmp/hudson6004457725217000001.sh
++ echo ImageName=docker-reg-bj.afmobitek.com:5000/user-server/debug:v7e6243b
+{"id":"0f43fde9-6b90-49f8-9629-44dd8d1fbb82","type":"error","links":{},"actions":{},"status":422,"code":"ActionNotAvailable","message":null,"detail":null,"fieldName":"action","baseType":"error"}
+getServiceConfig status is 200
+putUpgradeConfig success
+Finished: SUCCESS

@@ -27,10 +27,7 @@ import org.kohsuke.stapler.QueryParameter;
 import org.kohsuke.stapler.StaplerRequest;
 
 import javax.servlet.ServletException;
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.nio.charset.Charset;
 import java.util.Properties;
 
@@ -85,9 +82,14 @@ public class RancherClientBuilder extends Builder implements SimpleBuildStep {
     @Override
     public void perform(Run<?, ?> build, FilePath workspace, Launcher launcher, TaskListener listener) throws IOException, InterruptedException {
         RancherModel rancherModel = getRancherModel(workspace);
-        JSONObject config = getServiceConfig(rancherModel, listener);
-        updateConfigInfo(rancherModel, config);
-        putUpgradeConfig(config, rancherModel, listener);
+
+        this.finishUpgrade(rancherModel, listener);
+
+        JSONObject config = this.getServiceConfig(rancherModel, listener);
+
+        this.updateConfigInfo(rancherModel, config);
+
+        this.putUpgradeConfig(config, rancherModel, listener);
     }
 
     private RancherModel getRancherModel(FilePath workspace) throws IOException {
@@ -103,55 +105,113 @@ public class RancherClientBuilder extends Builder implements SimpleBuildStep {
 
     private String getImageName(FilePath workspace) throws IOException {
         Properties prop = new Properties();
-        InputStream in = new BufferedInputStream(new FileInputStream(workspace + "/" + profile));
+
+        InputStream in = new BufferedInputStream(new FileInputStream(workspace + "/" + this.profile));
+
         prop.load(in);
+
         in.close();
-        return prop.get("ImageName") + "";
+
+        return prop.get(this.proName) + "";
+    }
+
+    private void finishUpgrade(RancherModel rancherModel, TaskListener listener) throws IOException {
+        HttpPost post = new HttpPost(rancherModel.getRancherHost() + "/v2-beta/projects/" + rancherModel.getEnvId() + "/services/" + rancherModel.getServiceId() + "/?action=finishupgrade");
+
+        post.setHeader("Authorization", getAuthHeader(rancherModel));
+
+        post.setHeader("Content-Type", "application/json");
+
+        HttpResponse response = doHttpRequest(post);
+
+        response.getStatusLine().getStatusCode();
+
+        String strResult = EntityUtils.toString(response.getEntity());
+
+        listener.getLogger().println(strResult);
     }
 
     private void putUpgradeConfig(JSONObject config, RancherModel rancherModel, TaskListener listener) throws IOException {
-        String authHeader = getAuthHeader(rancherModel);
+        try {
+            this.putUpgradeConfig(config, rancherModel, listener,  0);
+        } catch (InterruptedException e) {
+            throw new IOException(e.getMessage());
+        }
+    }
+
+    private void putUpgradeConfig(JSONObject config, RancherModel rancherModel, TaskListener listener, int times) throws IOException, InterruptedException {
+        if (times == 3){
+            throw new IOException("putUpgradeConfig error with four times trying");
+        }
+        Thread.sleep(2000);
+
         HttpPost post = new HttpPost(rancherModel.getRancherHost() + "/v2-beta/projects/" + rancherModel.getEnvId() + "/services/" + rancherModel.getServiceId() + "/?action=upgrade");
-        post.setHeader("Authorization", authHeader);
+
+        post.setHeader("Authorization", getAuthHeader(rancherModel));
+
         post.setHeader("Content-Type", "application/json");
+
         StringEntity s = new StringEntity(config.toString(), "utf-8");
+
         s.setContentEncoding(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
+
         post.setEntity(s);
+
         HttpResponse response = doHttpRequest(post);
+
         int code = response.getStatusLine().getStatusCode();
-        String strResult = EntityUtils.toString(response.getEntity());
+
+        EntityUtils.toString(response.getEntity());
+
         if (!isStatusOK(code)){
-            listener.getLogger().println(strResult);
-            throw new IOException("putUpgradeConfig error");
+
+            listener.getLogger().println("try another action after 2s");
+
+            this.putUpgradeConfig(config, rancherModel, listener, times + 1);
 
         }
+
         listener.getLogger().println("putUpgradeConfig success");
     }
 
     private JSONObject getServiceConfig(RancherModel rancherModel, TaskListener listener) throws IOException {
-        String authHeader = getAuthHeader(rancherModel);
         HttpGet request = new HttpGet(rancherModel.getRancherHost() + "/v2-beta/projects/" + rancherModel.getEnvId() + "/services/" + rancherModel.getServiceId());
-        request.setHeader("Authorization", authHeader);
+
+        request.setHeader("Authorization", getAuthHeader(rancherModel));
+
         HttpResponse response = doHttpRequest(request);
+
         int code = response.getStatusLine().getStatusCode();
+
         String strResult = EntityUtils.toString(response.getEntity());
+
         listener.getLogger().println("getServiceConfig status is " + code);
+
         if (!isStatusOK(code)){
+
             listener.getLogger().println(strResult);
+
             throw new IOException("getUpgradeConfig error");
+
         }
+
         return JSONObject.fromObject(strResult);
     }
 
 
-    private String getAuthHeader(RancherModel rancherModel) {
+    private String getAuthHeader(RancherModel rancherModel) throws UnsupportedEncodingException {
+
         String auth = rancherModel.getAccessKey() + ":" + rancherModel.getSecretKey();
+
         byte[] encodedAuth = Base64.encodeBase64(auth.getBytes(Charset.forName("US-ASCII")));
-        return "Basic " + new String(encodedAuth);
+
+        return "Basic " + new String(encodedAuth, "UTF-8");
     }
 
     private HttpResponse doHttpRequest(HttpUriRequest request) throws IOException {
+
         DefaultHttpClient client = new DefaultHttpClient();
+
         return client.execute(request);
     }
 
@@ -167,13 +227,21 @@ public class RancherClientBuilder extends Builder implements SimpleBuildStep {
     }
 
     private void updateConfigInfo(RancherModel rancherModel, JSONObject config) {
+
         config.getJSONObject("launchConfig").put("imageUuid", "docker:" + rancherModel.getImageName());
+
         JSONObject inServiceStrategy = new JSONObject();
+
         inServiceStrategy.put("batchSize", 1);
+
         inServiceStrategy.put("intervalMillis", 2000);
+
         inServiceStrategy.put("launchConfig", config.getJSONObject("launchConfig"));
+
         inServiceStrategy.put("secondaryLaunchConfigs", config.getJSONArray("secondaryLaunchConfigs"));
+
         inServiceStrategy.put("startFirst", false);
+
         config.put("inServiceStrategy", inServiceStrategy);
     }
 

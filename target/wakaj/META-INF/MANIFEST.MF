@@ -10,7 +10,7 @@ Group-Id: afmobi
 Short-Name: wakaj
 Long-Name: wakaj
 Url: https://wiki.jenkins-ci.org/display/JENKINS/wakaj
-Plugin-Version: 1.0-SNAPSHOT (private-04/27/2017 14:28-wen)
+Plugin-Version: 1.0-SNAPSHOT (private-aec96a0e-wen)
 Hudson-Version: 1.625.3
 Jenkins-Version: 1.625.3
 Plugin-Developers: 

@@ -1,0 +1,22 @@
+Started by user [8mha:AAAAlh+LCAAAAAAAAP9b85aBtbiIQTGjNKU4P08vOT+vOD8nVc83PyU1x6OyILUoJzMv2y+/JJUBAhiZGBgqihhk0NSjKDWzXb3RdlLBUSYGJk8GtpzUvPSSDB8G5tKinBIGIZ+sxLJE/ZzEvHT94JKizLx0a6BxUmjGOUNodHsLgAzOEgYu/dLi1CL9vNKcHACFIKlWvwAAAA==[0manonymous
+Building in workspace /home/wen/Github/wakaj/work/jobs/aaaa/workspace
+[workspace] $ /bin/sh -xe /tmp/hudson3637427571394940962.sh
++ echo ImageName=docker-reg-bj.afmobitek.com:5000/user-server/debug:v7e6243b
+finishUpgrade success
+getServiceConfig status is 200
+{"id":"e8c852f2-c009-42bf-9f7d-9d8b4a93aba3","type":"error","links":{},"actions":{},"status":422,"code":"ActionNotAvailable","message":null,"detail":null,"fieldName":"action","baseType":"error"}
+FATAL: putUpgradeConfig error
+[8mha:AAAAWB+LCAAAAAAAAP9b85aBtbiIQSmjNKU4P08vOT+vOD8nVc8DzHWtSE4tKMnMz/PLL0ldFVf2c+b/lb5MDAwVRQxSaBqcITRIIQMEMIIUFgAAckCEiWAAAAA=[0mjava.io.IOException: putUpgradeConfig error
+	at afmobi.wakaj.RancherClientBuilder.putUpgradeConfig(RancherClientBuilder.java:142)
+	at afmobi.wakaj.RancherClientBuilder.perform(RancherClientBuilder.java:91)
+	at hudson.tasks.BuildStepCompatibilityLayer.perform(BuildStepCompatibilityLayer.java:75)
+	at hudson.tasks.BuildStepMonitor$1.perform(BuildStepMonitor.java:20)
+	at hudson.model.AbstractBuild$AbstractBuildExecution.perform(AbstractBuild.java:785)
+	at hudson.model.Build$BuildExecution.build(Build.java:205)
+	at hudson.model.Build$BuildExecution.doRun(Build.java:162)
+	at hudson.model.AbstractBuild$AbstractBuildExecution.run(AbstractBuild.java:537)
+	at hudson.model.Run.execute(Run.java:1741)
+	at hudson.model.FreeStyleBuild.run(FreeStyleBuild.java:43)
+	at hudson.model.ResourceController.execute(ResourceController.java:98)
+	at hudson.model.Executor.run(Executor.java:408)
+Finished: FAILURE
